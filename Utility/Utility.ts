@@ -1,14 +1,26 @@
+/**
+ * The `Utility` namespace contains helper constants, functions, and classes
+ * to faciliate the creation and maintenance of Office Scripts automations.
+ */
 namespace Utility {
 
+    /**
+     * Regex that matches the Excel column letter format.
+     */
     export const EXCEL_COLUMN_REGEX: RegExp = /^[A-Z]{1,3}$/i
 
-    export const CHARACTER_REGEX: RegExp = /[A-Z]+/g
-
+    /**
+     * The character that separates the sheet name from the range
+     * address in Excel.
+     */
     export const EXCEL_ADDRESS_SEPARATOR: string = "!"
 
+    /**
+     * Constants dictionary that contains the sheet column limits of Excel.
+     */
     export const EXCEL_BOUNDS = {
-        START: "A",
-        END: "XFD",
+        COLUMN_START_LETTER: "A",
+        COLUMN_END_LETTER: "XFD",
         MIN_NUM_COLUMNS: 0,
         MAX_NUM_COLUMNS: 16_384
     }
@@ -372,8 +384,8 @@ namespace Utility {
          */
         public static IsValidColumnLetter(address: string): boolean {
             return EXCEL_COLUMN_REGEX.test(address) &&
-                address >= EXCEL_BOUNDS.START &&
-                address <= EXCEL_BOUNDS.END
+                address >= EXCEL_BOUNDS.COLUMN_START_LETTER &&
+                address <= EXCEL_BOUNDS.COLUMN_END_LETTER
         }
 
         /**
@@ -419,7 +431,7 @@ namespace Utility {
          * @param name The name of the column to search for.
          * @param mode Optional parameter search mode. Case sensitive by default.
          * @returns The address of the matching header cell, if found.
-         * @throws `RangeError` if not found.
+         * @throws `Error` if not found.
          */
         public GetColumnIndexByName(name: string, criteria?: ExcelScript.SearchCriteria): number {
 
