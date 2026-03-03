@@ -458,6 +458,17 @@ namespace Utility {
                 .getRow(0)
         }
 
+        public GetColumn(column: string | number): ExcelScript.Range {
+
+            const columnIndex = this.GetColumnIndex(column)
+
+            return this.workbook
+                .getActiveWorksheet()
+                .getUsedRange()
+                .getColumn(columnIndex)
+
+        }
+
         /**
          * Gets the index number of a column address, such as "Sheet1!H35".
          * 
@@ -511,6 +522,58 @@ namespace Utility {
                     .getCell(0, index)
                     .setValue(name)
             }
+
+        }
+
+        /**
+         * Updates the header of a specified column.
+         * 
+         * @param position The target column.
+         * @name The new column header name.
+         */
+        public SetColumnName(position: string | number, name: string) {
+
+            const columnIndex = this.GetColumnIndex(position)
+
+            this.workbook
+                .getActiveWorksheet()
+                .getCell(0, columnIndex)
+                .setValue(name)
+
+        }
+
+        /**
+         * Deletes a column at the specified position.
+         * 
+         * @position The column letter name, index number, or header name.
+         */
+        public DeleteColumn(position: string | number) {
+
+            const columnIndex = this.GetColumnIndex(position)
+
+            this.workbook
+                .getActiveWorksheet()
+                .getUsedRange()
+                .getColumn(columnIndex)
+                .delete(ExcelScript.DeleteShiftDirection.left)
+
+        }
+
+        /**
+         * Moves a specified column to a specified position.
+         * 
+         * @param currentPosition The column to move.
+         * @param newPosition The target destination for the column.
+         */
+        public MoveColumn(currentPosition: string | number, newPosition: string | number) {
+
+            const column: ExcelScript.Range = this.GetColumn(currentPosition)
+
+            this.GetColumn(newPosition)
+                .insert(ExcelScript.InsertShiftDirection.right)
+                .copyFrom(column)
+            
+            column.delete(ExcelScript.DeleteShiftDirection.left)
 
         }
 
